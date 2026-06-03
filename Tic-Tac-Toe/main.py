@@ -3,20 +3,6 @@ import tkinter as tk
 
 from tkinter import messagebox, PhotoImage
 
-os_name = platform.system()
-
-root = tk.Tk()
-root.title("Крестики-нолики")
-
-if os_name in ['Linux', 'Darwin']:
-    icon = PhotoImage(file="icon.ico")
-    root.iconbitmap(False, icon)
-else:
-    root.iconbitmap("icon.ico")
-
-current_player = "X"
-buttons = []
-
 
 def check_winner():
     winning_combinations = [
@@ -40,10 +26,10 @@ def on_click(index):
         buttons[index]["text"] = current_player
 
         if check_winner():
-            messagebox.showinfo("Победа!", f"Победил {current_player}!")
+            messagebox.showinfo("Victory!", f"{current_player} won!")
             reset_game()
         elif all(button["text"] != "" for button in buttons):
-            messagebox.showinfo("Ничья!", "Игра окончена. Ничья!")
+            messagebox.showinfo("Draw!", "The game is over. Draw!")
             reset_game()
         else:
             if current_player == "X":
@@ -60,6 +46,19 @@ def reset_game():
         button.config(text="", bg="SystemButtonFace")
 
 
+os_name = platform.system()
+
+root = tk.Tk()
+root.title("Tic-Tac-Toe")
+
+if os_name in ['Linux', 'Darwin']:
+    icon = PhotoImage(file="icon.ico")
+    root.iconbitmap(False, icon)
+else:
+    root.iconbitmap("icon.ico")
+
+current_player, buttons = "X", []
+
 for i in range(9):
     button = tk.Button(
         root, 
@@ -69,10 +68,10 @@ for i in range(9):
         height=2,
         command=lambda idx=i: on_click(idx)
     )
-    button.grid(row=i//3, column=i%3)
+    button.grid(row=i // 3, column=i % 3)
     buttons.append(button)
 
-reset_button = tk.Button(root, text="Новая игра", font=("Arial", 14), command=reset_game)
+reset_button = tk.Button(root, text="New game", font=("Arial", 14), command=reset_game)
 reset_button.grid(row=3, column=0, columnspan=3, sticky="we")
 
 root.mainloop()
